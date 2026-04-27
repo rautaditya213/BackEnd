@@ -1,29 +1,18 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
-{
-     username:{
-        type: String,
-        requried: true,
-        unique: true,
-        lowercase: true
+const subTodoSchema = new mongoose.Schema({
+    content:{
+        type:String,
+        required: true
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
+    complete:{
+           type: Boolean,
+           default: false
     },
-    password:{
-        type: String,
-        required: true,
-        unique: true
+    cratedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref :"User"
     }
-},
-{
-    timestamps:true
-}
-)
+},{timestamps: true})
 
-export const User = mongoose.model("User", userSchema)
-
+export const subTodo = new mongoose.model("SubTodo", subTodoSchema)

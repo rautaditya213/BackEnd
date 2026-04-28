@@ -18,7 +18,7 @@ const todoSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"SubTodo"
         }
-    ]// Array of sub-todos
+    ] // Array of sub-todos
 },{timestamps:true}
 );
 

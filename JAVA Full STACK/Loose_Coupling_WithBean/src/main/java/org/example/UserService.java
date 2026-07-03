@@ -1,7 +1,6 @@
-package Loose;
+package org.example;
 
 public class UserService {
-
     private NotificationService notificationService;
 
     public UserService(NotificationService notificationService) {
@@ -9,6 +8,6 @@ public class UserService {
     }
 
     public void notifyUser(String message) {
-        notificationService.send(message);
+        notificationService.sendNotification(message);
     }
 }

@@ -4,7 +4,7 @@ package org.example;
 import org.springframework.stereotype.Component;
 
 
-@Component
+@Component("myBean")
 public class GreetingService {
 
     public void sayHello() {

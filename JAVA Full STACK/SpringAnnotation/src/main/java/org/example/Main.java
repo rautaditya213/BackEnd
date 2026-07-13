@@ -23,5 +23,6 @@ public class Main {
         LifeCycleBean lifeCycleBean = context.getBean(LifeCycleBean.class);
         lifeCycleBean.performAction();
 
+
     }
 }

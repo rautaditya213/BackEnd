@@ -1,10 +1,7 @@
 package com.demo.first.app;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +14,54 @@ public class UserController {
 
     @PostMapping
     public String creatUser(@RequestBody User user){
-        System.out.println("User created: " + user.getName() + ", Email: " + user.getEmail());
-        userDb.put(user.getId(),user);
+        userDb.putIfAbsent(user.getId(),user);
         System.out.println("User created: " + user.getName() + ", Email: " + user.getEmail());
         return "User created successfully";
+    }
+
+    @PutMapping
+    public String updateUser(@RequestBody User user){
+        if(userDb.containsKey(user.getId()))
+        {
+            userDb.put(user.getId(),user);
+            System.out.println("User updated: " + user.getName() + ", Email: " + user.getEmail());
+        }
+        else{
+            System.out.println("User with ID " + user.getId() + " not found.");
+            return "User with ID " + user.getId() + " not found.";
+        }
+        return "User updated successfully";
+    }
+
+    @DeleteMapping
+    public String deleteUser(@RequestBody User user){
+        if(userDb.containsKey(user.getId())){
+            userDb.remove(user.getId());
+            System.out.println("User deleted: "+ user.getName() + ", Email: " + user.getEmail());
+            return "User deleted successfully";
+        }
+        else{
+            System.out.println("User with id" + user.getId()+ "not found.");
+            return "User with id " + user.getId() + " not found.";
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUserById(@PathVariable int id){
+        if(userDb.containsKey(id)){
+            User user = userDb.get(id);
+            userDb.remove(id);
+            System.out.println("User deleted: "+ user.getName() + ", Email: " + user.getEmail());
+            return "User deleted successfully";
+        }
+        else{
+            System.out.println("User with id" + id + "not found.");
+            return "User with id" + id + "not found.";
+        }
+    }
+
+    @GetMapping
+    public Map<Integer, User> getAllUsers(){
+        return userDb;
     }
 }

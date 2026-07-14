@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PutMapping
-    public String updateUser(@RequestBody User user){
+    public ResponseEntity<User> updateUser(@RequestBody User user){
         if(userDb.containsKey(user.getId()))
         {
             userDb.put(user.getId(),user);
@@ -30,21 +30,21 @@ public class UserController {
         }
         else{
             System.out.println("User with ID " + user.getId() + " not found.");
-            return "User with ID " + user.getId() + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return "User updated successfully";
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @DeleteMapping
-    public String deleteUser(@RequestBody User user){
+    public ResponseEntity<User> deleteUser(@RequestBody User user){
         if(userDb.containsKey(user.getId())){
             userDb.remove(user.getId());
             System.out.println("User deleted: "+ user.getName() + ", Email: " + user.getEmail());
-            return "User deleted successfully";
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         }
         else{
             System.out.println("User with id" + user.getId()+ "not found.");
-            return "User with id " + user.getId() + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Map<Integer, User> getAllUsers(){
-        return userDb;
+    public ResponseEntity<Map<Integer, User> >getAllUsers(){
+        return ResponseEntity.status(HttpStatus.FOUND).body(userDb);
     }
 }

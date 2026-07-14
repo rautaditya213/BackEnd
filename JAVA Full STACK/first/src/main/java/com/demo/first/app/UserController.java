@@ -1,6 +1,8 @@
 package com.demo.first.app;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,10 +15,10 @@ public class UserController {
     private Map<Integer , User> userDb = new HashMap<>();
 
     @PostMapping
-    public String creatUser(@RequestBody User user){
+    public ResponseEntity<User> creatUser(@RequestBody User user){
         userDb.putIfAbsent(user.getId(),user);
         System.out.println("User created: " + user.getName() + ", Email: " + user.getEmail());
-        return "User created successfully";
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping

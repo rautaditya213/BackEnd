@@ -1,4 +1,4 @@
-package com.demo.first;
+package com.demo.first.app;
 
 
 
@@ -37,3 +37,4 @@ public class User {
         this.email = email;
     }
 }
+

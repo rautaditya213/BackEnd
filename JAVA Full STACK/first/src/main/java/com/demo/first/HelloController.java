@@ -1,6 +1,7 @@
 package com.demo.first;
 
 
+import com.demo.first.app.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ public class HelloController {
         return "Hello, World!";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/getuser")
     public User getUser() {
         User user= new User(1, "John Doe", "abc@gmail.com");
         return user;

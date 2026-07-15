@@ -13,7 +13,7 @@ public class HelloController {
         return "Hello, World!";
     }
 
-    @GetMapping("/getuser")
+    @GetMapping("/getuser" )
     public User getUser() {
         User user= new User(1, "John Doe", "abc@gmail.com");
         return user;

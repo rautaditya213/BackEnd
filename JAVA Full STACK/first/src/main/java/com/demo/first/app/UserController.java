@@ -66,4 +66,11 @@ public class UserController {
     public ResponseEntity<Map<Integer, User> >getAllUsers(){
         return ResponseEntity.status(HttpStatus.FOUND).body(userDb);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Integer id)
+    {
+        User user = userDb.get(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -78,7 +79,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userDb);
     }
 
-    //Path variable example
+    // Path variable example
     // Get user by id and orderId
     @GetMapping("/{id}/orders/{orderId}")
     public ResponseEntity<User> getUserOrder(@PathVariable(required = false)Integer id,@PathVariable(required = false) Integer orderId)
@@ -99,15 +100,28 @@ public class UserController {
     }
 
     //@Getmapping("/users","/users/{id}") this can be possible but not recommended because it will create ambiguity in the request mapping and will throw an error.
-
     //Request parameter example
     // /search?name=john sample example of query parameter
     @GetMapping("/search")
-    public ResponseEntity<User> searchUser(@RequestParam(required = false) int id,
-                                           @RequestParam(required = false) String name,
-                                           @RequestParam(required = false) String email){
-
+    public ResponseEntity<List<User>> searchUser(@RequestParam(required = false) Integer id,
+                                                 @RequestParam(required = false) String name,
+                                                 @RequestParam(required = false) String email)
+    {
+        System.out.println(id);
         System.out.println("Searching user with id " + id + ", name " + name + ", email " + email);
-        return ResponseEntity.status(HttpStatus.OK).body(userDb.get(id));
+        List<User> users =userDb.values().stream().filter
+                (u-> (id != null && u.getId() == id) ||
+                          (name != null && name.equalsIgnoreCase(u.getName())) ||
+                          (email != null && email.equalsIgnoreCase(u.getEmail()))).toList();
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+
+    @GetMapping("/info")
+    public String getInfo(@RequestHeader("User-Agent") String userAgent)
+    {
+        System.out.println("User-Agent: " + userAgent);
+        return "User-Agent: " + userAgent;
+
     }
 }

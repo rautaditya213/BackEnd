@@ -4,7 +4,11 @@ package com.demo.first.app;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -106,5 +110,16 @@ public class UserController {
     {
         System.out.println("User-Agent: " + userAgent);
         return "User-Agent: " + userAgent;
+    }
+
+    //Exception handling example
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String,Object>> handleIllegealArgumentException(IllegalArgumentException ex){
+        Map<String, Object > errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("timestamped", LocalDateTime.now());
+        errorResponse.put("error", HttpStatus.BAD_REQUEST);
+        errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

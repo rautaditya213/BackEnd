@@ -29,7 +29,7 @@ public class UserService {
         }
         else{
             System.out.println("User with ID " + user.getId() + " not found.");
-           return null;
+           throw new IllegalArgumentException("User with ID " + user.getId() + " not found.");
         }
         return user;
     }

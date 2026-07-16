@@ -12,8 +12,11 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
 
+    // In-memory database to store users
     private Map<Integer , User> userDb = new HashMap<>();
 
+
+    // Create user
     @PostMapping
     public ResponseEntity<User> creatUser(@RequestBody User user){
         userDb.putIfAbsent(user.getId(),user);
@@ -21,6 +24,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+
+    // Update user
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user){
         if(userDb.containsKey(user.getId()))
@@ -35,6 +40,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+
+    // Delete user
     @DeleteMapping
     public ResponseEntity<User> deleteUser(@RequestBody User user){
         if(userDb.containsKey(user.getId())){
@@ -48,6 +55,8 @@ public class UserController {
         }
     }
 
+
+    // Delete user by id
     @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable int id){
         if(userDb.containsKey(id)){
@@ -62,15 +71,43 @@ public class UserController {
         }
     }
 
+
+    // Get all users
     @GetMapping
     public ResponseEntity<Map<Integer, User> >getAllUsers(){
         return ResponseEntity.status(HttpStatus.FOUND).body(userDb);
     }
 
+    //Path variable example
+    // Get user by id and orderId
+    @GetMapping("/{id}/orders/{orderId}")
+    public ResponseEntity<User> getUserOrder(@PathVariable(required = false)Integer id,@PathVariable(required = false) Integer orderId)
+    {
+        User user = userDb.get(id);
+        System.out.println("User with id " + id + " and orderId " + orderId + " found: " +
+                user.getName() + ", Email: " + user.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    // Get user by id single User only
+    // path variable name must be same as the parameter name in the method
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id)
+    public ResponseEntity<User> getUser(@PathVariable(required = false) Integer id)
     {
         User user = userDb.get(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    //@Getmapping("/users","/users/{id}") this can be possible but not recommended because it will create ambiguity in the request mapping and will throw an error.
+
+    //Request parameter example
+    // /search?name=john sample example of query parameter
+    @GetMapping("/search")
+    public ResponseEntity<User> searchUser(@RequestParam(required = false) int id,
+                                           @RequestParam(required = false) String name,
+                                           @RequestParam(required = false) String email){
+
+        System.out.println("Searching user with id " + id + ", name " + name + ", email " + email);
+        return ResponseEntity.status(HttpStatus.OK).body(userDb.get(id));
     }
 }
